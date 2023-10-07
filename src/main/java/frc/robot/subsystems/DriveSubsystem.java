@@ -21,66 +21,59 @@ Two joysticks: driver(port 0) controls driving, operator(port 1) controls intake
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.DriveConstants;
+
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
-import com.kauailabs.navx.frc.AHRS;
-import frc.robot.Constants.DriveConstants;
 
 public class DriveSubsystem extends SubsystemBase {
   /** Creates a new DriveSubsystem. */
-  private final WPI_VictorSPX driveFrontLeft = new WPI_VictorSPX(DriveConstants.DRIVE_FRONT_LEFT);
-  private final WPI_VictorSPX driveFrontRight = new WPI_VictorSPX(DriveConstants.DRIVE_FRONT_RIGHT);
-  private final WPI_VictorSPX driveBackLeft = new WPI_VictorSPX(DriveConstants.DRIVE_BACK_LEFT);
-  private final WPI_VictorSPX driveBackRight = new WPI_VictorSPX(DriveConstants.DRIVE_BACK_RIGHT);
+  private final WPI_VictorSPX leftDriveFront = new WPI_VictorSPX(FRONT_LEFT_MOTOR_ID);
+  private final WPI_VictorSPX leftDriveBack = new WPI_VictorSPX(BACK_LEFT_MOTOR_ID);
+  private final WPI_VictorSPX rightDriveFront = new WPI_VictorSPX(FRONT_RIGHT_MOTOR_ID);
+  private final WPI_VictorSPX rightDriveBack = new WPI_VictorSPX(BACK_RIGHT_MOTOR_ID);
 
-  private final MotorControllerGroup driveLeft = new MotorControllerGroup(driveFrontLeft, driveBackLeft);
-  private final MotorControllerGroup driveRight = new MotorControllerGroup(driveFrontRight, driveBackRight);
+  private final MotorControllerGroup driveLeft = new MotorControllerGroup(leftDriveFront, leftDriveBack);
+  private final MotorControllerGroup driveRight = new MotorControllerGroup(rightDriveFront, rightDriveBack);
   private final DifferentialDrive driveRobot = new DifferentialDrive(driveLeft, driveRight);
 
-  private final AHRS gyro = new AHRS(SPI.Port.kMXP);
-  private final Encoder encoderLeftDrive = new Encoder(DriveConstants.LEFT_ENCODER_A, DriveConstants.LEFT_ENCODER_B);
 
-  public double getEncoderDrivePosition() {
-    return (encoderLeftDrive.getDistance());
-  }
 
-  public double getGyroYaw() {
-    return (gyro.getYaw());
-  }
 
-  public double getGyroPitch() {
-    return (gyro.getPitch());
-  }
+public DriveSubsystem() {
+  driveRight.setInverted(true);
+  leftDriveFront.setNeutralMode(NeutralMode.Brake);
+  leftDriveBack.setNeutralMode(NeutralMode.Brake);
+  rightDriveFront.setNeutralMode(NeutralMode.Brake);
+  rightDriveBack.setNeutralMode(NeutralMode.Brake);
 
-  public double getGyroRoll() {
-    return (gyro.getRoll());
-  }
+}
 
-  public DriveSubsystem() {
-    driveFrontLeft.setNeutralMode(NeutralMode.Brake);
-    driveFrontRight.setNeutralMode(NeutralMode.Brake);
-    driveBackLeft.setNeutralMode(NeutralMode.Brake);
-    driveBackRight.setNeutralMode(NeutralMode.Brake);
-    driveRight.setInverted(true);
-  }
+  public CommandBase exampleMethodCommand() {
+  // Inline construction of command goes here.
+  // Subsystem::RunOnce implicitly requires `this` subsystem.
+  return runOnce(
+      () -> {
+        /* one-time action goes here */
+      });
+}
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Roll", getGyroRoll());
-    SmartDashboard.putNumber("Pitch", getGyroPitch());
-    SmartDashboard.putNumber("Yaw", getGyroYaw());
-    SmartDashboard.putNumber("Encoder Left Distance", encoderLeftDrive.getDistance());
+/**
+ * An example method querying a boolean state of the subsystem (for example, a digital sensor).
+ *
+ * @return value of some boolean subsystem state, such as a digital sensor.
+ */
+public boolean exampleCondition() {
+  // Query some boolean state, such as a digital sensor.
+  return false;
+}
 
-  }
-
-  public void setMotor(double forwardSpeed, double turnSpeed) {
-    driveRobot.arcadeDrive(forwardSpeed, turnSpeed);
-  }
+@Override
+public void simulationPeriodic() {
+  // This method will be called once per scheduler run during simulation
+}
 }
