@@ -21,8 +21,6 @@ public final class Constants {
   public static class DriveConstants {
     public static final int DRIVE_AXIS = 1;
     public static final int TURN_AXIS = 4;
-    public static final int TURN_CONTROLLER_POSITION_TOLERANCE = 1;
-    public static final int TURN_CONTROLLER_VELOCITY_TOLERANCE = 10;
     public static final int FRONT_LEFT_MOTOR_ID = 1;
     public static final int FRONT_RIGHT_MOTOR_ID = 3;
     public static final int BACK_LEFT_MOTOR_ID = 2;
@@ -33,7 +31,6 @@ public final class Constants {
     public static final int INTAKE_OPEN_BUTTON = 2;
     public static final int INTAKE_CLOSE_BUTTON = 1;
     public static final int INTAKE_MOTOR_ID = 5;
-    public static final double stallAfterIntake = 0.2;
     public static final double intakeStallSpeed = 0.2;
 
 
